@@ -1,0 +1,5 @@
+{
+  "name": "GateLabs",
+  "description": "An interactive digital logic learning application for students. Covers logic gates and TTL 74-series integrated circuits with truth tables, circuit diagrams, and pin configurations.",
+  "requestFramePermissions": []
+}
