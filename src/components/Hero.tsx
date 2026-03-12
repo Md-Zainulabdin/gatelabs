@@ -52,7 +52,7 @@ export const Hero = ({ onExplore }: { onExplore: (tab: string) => void }) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 1 }}
+          transition={{ delay: 0.4, duration: 1 }}
           className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-12 text-left border-t border-zinc-100 pt-12"
         >
           <div className="space-y-3">

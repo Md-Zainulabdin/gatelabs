@@ -29,39 +29,42 @@ const Navbar = ({
         <div className="flex justify-between h-14 items-center">
           {/* Left — Brand */}
           <div className="flex items-center gap-5">
-            <button
-              onClick={() => handleTab("hero")}
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-            >
-              <span className="text-xl font-extrabold tracking-tighter font-mono cursor-pointer">
-                GateLabs
-              </span>
-            </button>
+            <div className="flex items-center gap-2">
+              <img src="/images/logo.png" alt="logo" className="w-8 h-8" />
+              <button
+                onClick={() => handleTab("hero")}
+                className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+              >
+                <span className="text-xl font-extrabold tracking-tighter font-mono cursor-pointer">
+                  GateLabs
+                </span>
+              </button>
+            </div>
 
             {/* Center — Desktop nav */}
             <div className="hidden md:flex items-center gap-6">
-              <span className="text-zinc-300 font-mono text-lg">/</span>
+              <span className="text-zinc-300 font-mono text-xs">/</span>
               <div className="flex space-x-6">
                 <button
                   onClick={() => handleTab("gates")}
-                  className={`font-mono text-xs font-bold tracking-widest uppercase transition-colors ${activeTab === "gates" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
+                  className={`font-geist text-[11px] font-semibold tracking-widest uppercase transition-colors ${activeTab === "gates" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
                 >
                   Logic Gates
                 </button>
                 <button
                   onClick={() => handleTab("ics")}
-                  className={`font-mono text-xs font-bold tracking-widest uppercase transition-colors ${activeTab === "ics" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
+                  className={`font-geist text-[11px] font-semibold tracking-widest uppercase transition-colors ${activeTab === "ics" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
                 >
                   IC's
                 </button>
                 <div className="flex items-center gap-1.5">
                   <button
                     disabled
-                    className="font-mono text-xs font-bold tracking-widest uppercase text-zinc-300 cursor-not-allowed"
+                    className="font-geist text-[11px] font-semibold tracking-widest uppercase text-zinc-300 cursor-not-allowed"
                   >
                     Playground
                   </button>
-                  <span className="font-mono text-[9px] font-bold uppercase tracking-wider text-amber-500 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-sm">
+                  <span className="font-mono text-[8px] font-semibold uppercase tracking-wider text-amber-500 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-sm">
                     Soon
                   </span>
                 </div>
