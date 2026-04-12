@@ -24,13 +24,12 @@ const Navbar = ({
   };
 
   return (
-    <nav className="border-b border-zinc-200 bg-white text-zinc-900">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="border-b border-zinc-200 bg-white text-zinc-900 lg:sticky lg:top-0 lg:z-50">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-14 items-center">
           {/* Left — Brand */}
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-2">
-              <img src="/images/logo.png" alt="logo" className="w-8 h-8" />
               <button
                 onClick={() => handleTab("hero")}
                 className="flex items-center gap-2 hover:opacity-80 transition-opacity"
@@ -50,6 +49,18 @@ const Navbar = ({
                   className={`font-geist text-[11px] font-semibold tracking-widest uppercase transition-colors ${activeTab === "gates" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
                 >
                   Logic Gates
+                </button>
+                <button
+                  onClick={() => handleTab("combinational")}
+                  className={`font-geist text-[11px] font-semibold tracking-widest uppercase transition-colors ${activeTab === "combinational" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
+                >
+                  Combinational
+                </button>
+                <button
+                  onClick={() => handleTab("sequential")}
+                  className={`font-geist text-[11px] font-semibold tracking-widest uppercase transition-colors ${activeTab === "sequential" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
+                >
+                  Sequential
                 </button>
                 <button
                   onClick={() => handleTab("ics")}
@@ -133,6 +144,18 @@ const Navbar = ({
             Logic Gates
           </button>
           <button
+            onClick={() => handleTab("combinational")}
+            className={`text-left font-mono text-xs font-semibold tracking-widest uppercase transition-colors ${activeTab === "combinational" ? "text-zinc-900" : "text-zinc-500"}`}
+          >
+            Combinational
+          </button>
+          <button
+            onClick={() => handleTab("sequential")}
+            className={`text-left font-mono text-xs font-semibold tracking-widest uppercase transition-colors ${activeTab === "sequential" ? "text-zinc-900" : "text-zinc-500"}`}
+          >
+            Sequential
+          </button>
+          <button
             onClick={() => handleTab("ics")}
             className={`text-left font-mono text-xs font-semibold tracking-widest uppercase transition-colors ${activeTab === "ics" ? "text-zinc-900" : "text-zinc-500"}`}
           >
@@ -145,7 +168,7 @@ const Navbar = ({
             >
               Playground
             </button>
-            <span className="font-mono text-[9px] font-semibold uppercase tracking-wider text-amber-500 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-sm">
+            <span className="font-mono text-[9px] font-semibold uppercase tracking-widest text-amber-500 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-sm">
               Soon
             </span>
           </div>

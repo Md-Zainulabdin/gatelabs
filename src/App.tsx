@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
-import { Hero } from "@/src/components/Hero";
-import { LogicGatesView } from "@/src/components/LogicGates";
-import { ICsView } from "@/src/components/ICs";
-import Navbar from "@/src/components/Navbar";
+import { Hero } from "@/src/components/ui/Hero";
+import { LogicGatesView } from "@/src/components/views/LogicGates";
+import { ICsView } from "@/src/components/views/ICs";
+import Navbar from "@/src/components/ui/Navbar";
+import { CombinationalView } from "@/src/components/views/Combinational";
+import { SequentialView } from "@/src/components/views/Sequential";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("hero");
@@ -13,7 +15,7 @@ export default function App() {
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <main className="grow">
+      <main className="grow px-2 md:px-4">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -26,6 +28,8 @@ export default function App() {
             {activeTab === "hero" && <Hero onExplore={setActiveTab} />}
             {activeTab === "gates" && <LogicGatesView />}
             {activeTab === "ics" && <ICsView />}
+            {activeTab === "combinational" && <CombinationalView />}
+            {activeTab === "sequential" && <SequentialView />}
           </motion.div>
         </AnimatePresence>
       </main>

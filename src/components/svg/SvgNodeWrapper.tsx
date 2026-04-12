@@ -1,0 +1,14 @@
+import { memo, PropsWithChildren } from "react";
+
+interface SvgNodeWrapperProps {
+  x: number;
+  y: number;
+}
+
+export const SvgNodeWrapper = memo(
+  ({ x, y, children }: PropsWithChildren<SvgNodeWrapperProps>) => {
+    return <g transform={`translate(${x},${y})`}>{children}</g>;
+  },
+);
+
+export default SvgNodeWrapper;

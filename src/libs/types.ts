@@ -66,3 +66,37 @@ export interface GateDefinition {
   expression: string;
   truthTable: { inputs: LogicValue[]; output: LogicValue }[];
 }
+
+export interface CombinationalCircuitDefinition {
+  id: string;
+  name: string;
+  description: string;
+
+  inputs: string[];
+  outputs: string[];
+  expression: string[];
+  truthTable: Record<string, number>[];
+
+  blockDiagram: (props: {
+    inputs: Record<string, number>;
+    outputs: Record<string, number>;
+    toggleInput: (name: string) => void;
+  }) => React.ReactNode;
+}
+
+export interface SequentialCircuitDefinition {
+  id: string;
+  name: string;
+  description: string;
+  
+  inputs: string[];
+  outputs: string[];
+  truthTable: any[];
+  
+  blockDiagram: (props: {
+    inputs: Record<string, number>;
+    outputs: Record<string, number>;
+    toggleInput: (name: string) => void;
+  }) => React.ReactNode;
+  
+}
