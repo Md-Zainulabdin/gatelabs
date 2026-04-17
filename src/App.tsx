@@ -8,6 +8,10 @@ import Navbar from "@/src/components/ui/Navbar";
 import { CombinationalView } from "@/src/components/views/Combinational";
 import { SequentialView } from "@/src/components/views/Sequential";
 
+/**
+ * Root application component.
+ * Manages the current active tab and renders the matching view.
+ */
 export default function App() {
   const [activeTab, setActiveTab] = useState("hero");
 

@@ -1,6 +1,10 @@
 import { Star, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 
+/**
+ * Application navigation bar.
+ * Loads GitHub stars and provides desktop/mobile tab controls.
+ */
 const Navbar = ({
   activeTab,
   setActiveTab,

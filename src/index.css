@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -27,6 +27,33 @@
   }
   .card {
     @apply bg-white border border-zinc-200 p-6;
+  }
+  .sidebar {
+    @apply lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto space-y-4;
+  }
+  .sidebar-selection {
+    @apply grid grid-cols-1 gap-3;
+  }
+  .sidebar-selection-item {
+    @apply flex items-center justify-between px-4 py-3 border text-sm font-medium transition-all bg-white text-zinc-600 border-zinc-200 hover:border-zinc-400;
+  }
+  .sidebar-selection-item-active {
+    @apply bg-zinc-900 text-white border-zinc-900;
+  }
+  .section-title {
+    @apply text-sm font-semibold uppercase tracking-wider text-zinc-500;
+  }
+  .section-heading {
+    @apply text-xs font-bold uppercase tracking-widest text-zinc-400;
+  }
+  .section-heading-spaced {
+    @apply text-xs font-bold uppercase tracking-widest text-zinc-400 mb-6;
+  }
+  .panel-block {
+    @apply bg-zinc-50 border border-zinc-200 p-6 flex items-center justify-center min-h-65;
+  }
+  .table-panel {
+    @apply overflow-hidden border border-zinc-200;
   }
   .table-stripe tr:nth-child(even) {
     @apply bg-zinc-50;
@@ -59,4 +86,3 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-zinc-400;
 }
-

@@ -9,6 +9,10 @@ interface SvgInputNodeProps {
   onToggle: () => void;
 }
 
+/**
+ * SVG input node used in interactive block diagrams.
+ * Displays a toggle button for an input signal.
+ */
 export const SvgInputNode = memo(({ x, y, value, label, onToggle }: SvgInputNodeProps) => {
   return (
     <SvgNodeWrapper x={x} y={y}>

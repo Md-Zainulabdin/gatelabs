@@ -1,34 +1,14 @@
 import { useState } from "react";
-import { ChevronRight, Lightbulb, ArrowRight } from "lucide-react";
-import { GATES, GateSymbol } from "@/src/libs/constants";
+import { Lightbulb, ArrowRight } from "lucide-react";
+import { evaluateGate, GATES, GateSymbol } from "@/src/libs/constants";
 import { GateType, LogicValue } from "@/src/libs/types";
+import { SidebarSelection } from "@/src/components/ui/SidebarSelection";
+import { TruthTable } from "@/src/components/ui/TruthTable";
 
-const evaluate = (type: GateType, vals: LogicValue[]): LogicValue => {
-  const b = vals.map((v) => v === LogicValue.HIGH);
-  switch (type) {
-    case GateType.AND:
-      return b.every((v) => v) ? LogicValue.HIGH : LogicValue.LOW;
-    case GateType.OR:
-      return b.some((v) => v) ? LogicValue.HIGH : LogicValue.LOW;
-    case GateType.NOT:
-      return b[0] ? LogicValue.LOW : LogicValue.HIGH;
-    case GateType.NAND:
-      return b.every((v) => v) ? LogicValue.LOW : LogicValue.HIGH;
-    case GateType.NOR:
-      return b.some((v) => v) ? LogicValue.LOW : LogicValue.HIGH;
-    case GateType.XOR:
-      return b.filter((v) => v).length % 2 !== 0
-        ? LogicValue.HIGH
-        : LogicValue.LOW;
-    case GateType.XNOR:
-      return b.filter((v) => v).length % 2 === 0
-        ? LogicValue.HIGH
-        : LogicValue.LOW;
-    default:
-      return LogicValue.LOW;
-  }
-};
-
+/**
+ * View for primitive logic gates.
+ * Allows selection of a gate and interactive input toggling.
+ */
 export const LogicGatesView = () => {
   const [selectedGate, setSelectedGate] = useState<GateType>(GateType.AND);
   const [inputs, setInputs] = useState<LogicValue[]>([
@@ -37,7 +17,7 @@ export const LogicGatesView = () => {
   ]);
 
   const gate = GATES[selectedGate];
-  const output = evaluate(selectedGate, inputs);
+  const output = evaluateGate(selectedGate, inputs as number[]) as LogicValue;
 
   const selectGate = (type: GateType) => {
     setSelectedGate(type);
@@ -62,28 +42,16 @@ export const LogicGatesView = () => {
     <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
       {/* SIDEBAR */}
       <div className="lg:col-span-1">
-        <div className="lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto space-y-4">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-500 mb-4">
-            Select Gate
-          </h2>
-          <div className="grid grid-cols-1 gap-2">
-            {Object.values(GateType).map((type) => (
-              <button
-                key={type}
-                onClick={() => selectGate(type)}
-                className={`flex items-center justify-between px-4 py-3 border text-sm font-medium transition-all ${
-                  selectedGate === type
-                    ? "bg-zinc-900 text-white border-zinc-900"
-                    : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-400"
-                }`}
-              >
-                <span>{type} Gate</span>
-                <ChevronRight
-                  className={`w-4 h-4 ${selectedGate === type ? "opacity-100" : "opacity-0"}`}
-                />
-              </button>
-            ))}
-          </div>
+        <div className="sidebar">
+          <h2 className="section-title mb-4">Primitive Gates</h2>
+          <SidebarSelection
+            items={Object.values(GateType).map((type) => ({
+              id: type,
+              label: `${type} Gate`,
+            }))}
+            selectedId={selectedGate}
+            onSelect={(id) => selectGate(id as GateType)}
+          />
         </div>
       </div>
 
@@ -159,42 +127,26 @@ export const LogicGatesView = () => {
 
           {/* Truth table */}
           <div className="space-y-4">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400">
-              Truth Table
-            </h3>
-            <div className="overflow-hidden border border-zinc-200">
-              <table className="w-full table-stripe">
-                <thead>
-                  <tr>
-                    {inputs.map((_, i) => (
-                      <th key={i} className="text-center">
-                        Input {String.fromCharCode(65 + i)}
-                      </th>
-                    ))}
-                    <th className="text-center">Output (Y)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {gate.truthTable.map((row, i) => (
-                    <tr
-                      key={i}
-                      className={`transition-colors text-center ${
-                        isActiveRow(row.inputs)
-                          ? "bg-zinc-900! text-white!"
-                          : ""
-                      }`}
-                    >
-                      {row.inputs.map((v, j) => (
-                        <td key={j} className="font-mono">
-                          {v}
-                        </td>
-                      ))}
-                      <td className="font-mono font-bold">{row.output}</td>
-                    </tr>
+            <h3 className="section-heading">Truth Table</h3>
+            <TruthTable
+              headers={[
+                ...inputs.map((_, i) => `${String.fromCharCode(65 + i)}`),
+                "Output (Y)",
+              ]}
+              rows={gate.truthTable}
+              rowKey={(_, index) => index}
+              isActiveRow={(row) => isActiveRow(row.inputs)}
+              renderRow={(row) => (
+                <>
+                  {row.inputs.map((v, j) => (
+                    <td key={j} className="font-mono">
+                      {v}
+                    </td>
                   ))}
-                </tbody>
-              </table>
-            </div>
+                  <td className="font-mono font-bold">{row.output}</td>
+                </>
+              )}
+            />
           </div>
         </div>
       </div>

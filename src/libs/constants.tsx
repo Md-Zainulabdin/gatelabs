@@ -1,300 +1,28 @@
 import {
   GateType,
-  LogicValue,
   GateDefinition,
   ICDefinition,
   Pin,
+  LogicState,
   CombinationalCircuitDefinition,
   SequentialCircuitDefinition,
 } from "@/src/libs/types";
 
-import { SvgInputNode } from "@/src/components/svg/SvgInputNode";
-import { SvgOutputNode } from "@/src/components/svg/SvgOutputNode";
+import { GATE_PATHS } from "@/src/components/diagrams/gateSymbols";
+import * as Diagrams from "@/src/components/diagrams/CircuitDiagrams";
 
-// GateSymbol paths are purely data — one component renders them all
-const GATE_PATHS: Record<GateType, React.ReactNode> = {
-  [GateType.AND]: (
-    <>
-      <path
-        d="M20,10 L50,10 A20,20 0 0,1 50,50 L20,50 Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="0"
-        y1="20"
-        x2="20"
-        y2="20"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="0"
-        y1="40"
-        x2="20"
-        y2="40"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="70"
-        y1="30"
-        x2="100"
-        y2="30"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-    </>
-  ),
-  [GateType.OR]: (
-    <>
-      <path
-        d="M20,10 Q40,10 70,30 Q40,50 20,50 Q30,30 20,10 Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="0"
-        y1="20"
-        x2="25"
-        y2="20"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="0"
-        y1="40"
-        x2="25"
-        y2="40"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="70"
-        y1="30"
-        x2="100"
-        y2="30"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-    </>
-  ),
-  [GateType.NOT]: (
-    <>
-      <path
-        d="M30,15 L60,30 L30,45 Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <circle
-        cx="65"
-        cy="30"
-        r="5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="0"
-        y1="30"
-        x2="30"
-        y2="30"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="70"
-        y1="30"
-        x2="100"
-        y2="30"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-    </>
-  ),
-  [GateType.NAND]: (
-    <>
-      <path
-        d="M20,10 L50,10 A20,20 0 0,1 50,50 L20,50 Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <circle
-        cx="75"
-        cy="30"
-        r="5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="0"
-        y1="20"
-        x2="20"
-        y2="20"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="0"
-        y1="40"
-        x2="20"
-        y2="40"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="80"
-        y1="30"
-        x2="100"
-        y2="30"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-    </>
-  ),
-  [GateType.NOR]: (
-    <>
-      <path
-        d="M20,10 Q40,10 70,30 Q40,50 20,50 Q30,30 20,10 Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <circle
-        cx="75"
-        cy="30"
-        r="5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="0"
-        y1="20"
-        x2="25"
-        y2="20"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="0"
-        y1="40"
-        x2="25"
-        y2="40"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="80"
-        y1="30"
-        x2="100"
-        y2="30"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-    </>
-  ),
-  [GateType.XOR]: (
-    <>
-      <path
-        d="M15,10 Q25,30 15,50"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <path
-        d="M25,10 Q45,10 75,30 Q45,50 25,50 Q35,30 25,10 Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="0"
-        y1="20"
-        x2="22"
-        y2="20"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="0"
-        y1="40"
-        x2="22"
-        y2="40"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="75"
-        y1="30"
-        x2="100"
-        y2="30"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-    </>
-  ),
-  [GateType.XNOR]: (
-    <>
-      <path
-        d="M15,10 Q25,30 15,50"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <path
-        d="M25,10 Q45,10 75,30 Q45,50 25,50 Q35,30 25,10 Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <circle
-        cx="80"
-        cy="30"
-        r="5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="0"
-        y1="20"
-        x2="22"
-        y2="20"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="0"
-        y1="40"
-        x2="22"
-        y2="40"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <line
-        x1="85"
-        y1="30"
-        x2="100"
-        y2="30"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-    </>
-  ),
-};
-
+/**
+ * Renders the primary symbol for a logic gate using pre-defined SVG paths.
+ */
 export const GateSymbol = ({ type }: { type: GateType }) => (
   <svg viewBox="0 0 100 60" className="w-full h-full">
     {GATE_PATHS[type]}
   </svg>
 );
 
+/**
+ * GATES Record: Source of truth for all primitive logic gate properties.
+ */
 export const GATES: Record<GateType, GateDefinition> = {
   [GateType.AND]: {
     type: GateType.AND,
@@ -303,10 +31,10 @@ export const GATES: Record<GateType, GateDefinition> = {
     description: "Outputs HIGH only if all inputs are HIGH.",
     expression: "Y = A · B",
     truthTable: [
-      { inputs: [LogicValue.LOW, LogicValue.LOW], output: LogicValue.LOW },
-      { inputs: [LogicValue.LOW, LogicValue.HIGH], output: LogicValue.LOW },
-      { inputs: [LogicValue.HIGH, LogicValue.LOW], output: LogicValue.LOW },
-      { inputs: [LogicValue.HIGH, LogicValue.HIGH], output: LogicValue.HIGH },
+      { inputs: [0, 0], output: 0 },
+      { inputs: [0, 1], output: 0 },
+      { inputs: [1, 0], output: 0 },
+      { inputs: [1, 1], output: 1 },
     ],
   },
   [GateType.OR]: {
@@ -316,10 +44,10 @@ export const GATES: Record<GateType, GateDefinition> = {
     description: "Outputs HIGH if at least one input is HIGH.",
     expression: "Y = A + B",
     truthTable: [
-      { inputs: [LogicValue.LOW, LogicValue.LOW], output: LogicValue.LOW },
-      { inputs: [LogicValue.LOW, LogicValue.HIGH], output: LogicValue.HIGH },
-      { inputs: [LogicValue.HIGH, LogicValue.LOW], output: LogicValue.HIGH },
-      { inputs: [LogicValue.HIGH, LogicValue.HIGH], output: LogicValue.HIGH },
+      { inputs: [0, 0], output: 0 },
+      { inputs: [0, 1], output: 1 },
+      { inputs: [1, 0], output: 1 },
+      { inputs: [1, 1], output: 1 },
     ],
   },
   [GateType.NOT]: {
@@ -329,8 +57,8 @@ export const GATES: Record<GateType, GateDefinition> = {
     description: "Inverts the input signal.",
     expression: "Y = ¬A",
     truthTable: [
-      { inputs: [LogicValue.LOW], output: LogicValue.HIGH },
-      { inputs: [LogicValue.HIGH], output: LogicValue.LOW },
+      { inputs: [0], output: 1 },
+      { inputs: [1], output: 0 },
     ],
   },
   [GateType.NAND]: {
@@ -340,10 +68,10 @@ export const GATES: Record<GateType, GateDefinition> = {
     description: "Outputs LOW only if all inputs are HIGH.",
     expression: "Y = ¬(A · B)",
     truthTable: [
-      { inputs: [LogicValue.LOW, LogicValue.LOW], output: LogicValue.HIGH },
-      { inputs: [LogicValue.LOW, LogicValue.HIGH], output: LogicValue.HIGH },
-      { inputs: [LogicValue.HIGH, LogicValue.LOW], output: LogicValue.HIGH },
-      { inputs: [LogicValue.HIGH, LogicValue.HIGH], output: LogicValue.LOW },
+      { inputs: [0, 0], output: 1 },
+      { inputs: [0, 1], output: 1 },
+      { inputs: [1, 0], output: 1 },
+      { inputs: [1, 1], output: 0 },
     ],
   },
   [GateType.NOR]: {
@@ -353,10 +81,10 @@ export const GATES: Record<GateType, GateDefinition> = {
     description: "Outputs HIGH only if all inputs are LOW.",
     expression: "Y = ¬(A + B)",
     truthTable: [
-      { inputs: [LogicValue.LOW, LogicValue.LOW], output: LogicValue.HIGH },
-      { inputs: [LogicValue.LOW, LogicValue.HIGH], output: LogicValue.LOW },
-      { inputs: [LogicValue.HIGH, LogicValue.LOW], output: LogicValue.LOW },
-      { inputs: [LogicValue.HIGH, LogicValue.HIGH], output: LogicValue.LOW },
+      { inputs: [0, 0], output: 1 },
+      { inputs: [0, 1], output: 0 },
+      { inputs: [1, 0], output: 0 },
+      { inputs: [1, 1], output: 0 },
     ],
   },
   [GateType.XOR]: {
@@ -366,10 +94,10 @@ export const GATES: Record<GateType, GateDefinition> = {
     description: "Outputs HIGH if exactly one input is HIGH.",
     expression: "Y = A ⊕ B",
     truthTable: [
-      { inputs: [LogicValue.LOW, LogicValue.LOW], output: LogicValue.LOW },
-      { inputs: [LogicValue.LOW, LogicValue.HIGH], output: LogicValue.HIGH },
-      { inputs: [LogicValue.HIGH, LogicValue.LOW], output: LogicValue.HIGH },
-      { inputs: [LogicValue.HIGH, LogicValue.HIGH], output: LogicValue.LOW },
+      { inputs: [0, 0], output: 0 },
+      { inputs: [0, 1], output: 1 },
+      { inputs: [1, 0], output: 1 },
+      { inputs: [1, 1], output: 0 },
     ],
   },
   [GateType.XNOR]: {
@@ -379,12 +107,39 @@ export const GATES: Record<GateType, GateDefinition> = {
     description: "Outputs HIGH if both inputs are the same.",
     expression: "Y = ¬(A ⊕ B)",
     truthTable: [
-      { inputs: [LogicValue.LOW, LogicValue.LOW], output: LogicValue.HIGH },
-      { inputs: [LogicValue.LOW, LogicValue.HIGH], output: LogicValue.LOW },
-      { inputs: [LogicValue.HIGH, LogicValue.LOW], output: LogicValue.LOW },
-      { inputs: [LogicValue.HIGH, LogicValue.HIGH], output: LogicValue.HIGH },
+      { inputs: [0, 0], output: 1 },
+      { inputs: [0, 1], output: 0 },
+      { inputs: [1, 0], output: 0 },
+      { inputs: [1, 1], output: 1 },
     ],
   },
+};
+
+// Refined evaluator to support N-inputs and the LogicState type
+export const evaluateGate = (type: GateType, inputs: number[]): LogicState => {
+  if (inputs.length === 0) return "Invalid";
+
+  const hasHigh = inputs.includes(1);
+  const allHigh = inputs.every((v) => v === 1);
+
+  switch (type) {
+    case GateType.AND:
+      return allHigh ? 1 : 0;
+    case GateType.NAND:
+      return allHigh ? 0 : 1;
+    case GateType.OR:
+      return hasHigh ? 1 : 0;
+    case GateType.NOR:
+      return hasHigh ? 0 : 1;
+    case GateType.NOT:
+      return inputs[0] === 1 ? 0 : 1;
+    case GateType.XOR:
+      return inputs.reduce((acc, val) => acc ^ val, 0) as 0 | 1;
+    case GateType.XNOR:
+      return inputs.reduce((acc, val) => acc ^ val, 0) === 0 ? 1 : 0;
+    default:
+      return "Invalid";
+  }
 };
 
 const createQuadGatePinout = (gateName: string): Pin[] => [
@@ -787,8 +542,6 @@ export const ICS: Record<string, ICDefinition> = {
   },
 };
 
-const wireColor = (value: number) => (value === 1 ? "#22c55e" : "currentColor");
-
 export const COMBINATIONAL_CIRCUITS: Record<
   string,
   CombinationalCircuitDefinition
@@ -807,78 +560,11 @@ export const COMBINATIONAL_CIRCUITS: Record<
       { A: 1, B: 0, Sum: 1, Carry: 0 },
       { A: 1, B: 1, Sum: 0, Carry: 1 },
     ],
-    blockDiagram: ({ inputs, outputs, toggleInput }) => (
-      <svg viewBox="0 0 400 240" className="w-full h-full text-zinc-900">
-        <rect
-          x="120"
-          y="40"
-          width="160"
-          height="160"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <text
-          x="200"
-          y="125"
-          fontSize="16"
-          textAnchor="middle"
-          fontWeight="bold"
-        >
-          HALF ADDER
-        </text>
-
-        <line
-          x1="60"
-          y1="90"
-          x2="120"
-          y2="90"
-          stroke={wireColor(inputs.A)}
-          strokeWidth="2"
-        />
-        <line
-          x1="60"
-          y1="150"
-          x2="120"
-          y2="150"
-          stroke={wireColor(inputs.B)}
-          strokeWidth="2"
-        />
-        <line
-          x1="280"
-          y1="90"
-          x2="340"
-          y2="90"
-          stroke={wireColor(outputs.Sum)}
-          strokeWidth="2"
-        />
-        <line
-          x1="280"
-          y1="150"
-          x2="340"
-          y2="150"
-          stroke={wireColor(outputs.Carry)}
-          strokeWidth="2"
-        />
-
-        <SvgInputNode
-          x={60}
-          y={90}
-          label="A"
-          value={inputs.A}
-          onToggle={() => toggleInput("A")}
-        />
-        <SvgInputNode
-          x={60}
-          y={150}
-          label="B"
-          value={inputs.B}
-          onToggle={() => toggleInput("B")}
-        />
-        <SvgOutputNode x={340} y={90} label="Sum" value={outputs.Sum} />
-        <SvgOutputNode x={340} y={150} label="Cout" value={outputs.Carry} />
-      </svg>
-    ),
+    evaluate: (i) => ({
+      Sum: (i.A ^ i.B) as LogicState,
+      Carry: (i.A & i.B) as LogicState,
+    }),
+    blockDiagram: Diagrams.HalfAdderDiagram,
   },
 
   "full-adder": {
@@ -902,87 +588,11 @@ export const COMBINATIONAL_CIRCUITS: Record<
       { A: 1, B: 1, Cin: 0, Sum: 0, Cout: 1 },
       { A: 1, B: 1, Cin: 1, Sum: 1, Cout: 1 },
     ],
-    blockDiagram: ({ inputs, outputs, toggleInput }) => (
-      <svg viewBox="0 0 400 240" className="w-full h-full text-zinc-900">
-        <rect
-          x="120"
-          y="40"
-          width="160"
-          height="160"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <text x="200" y="125" textAnchor="middle" fontWeight="bold">
-          FULL ADDER
-        </text>
-
-        <line
-          x1="60"
-          y1="70"
-          x2="120"
-          y2="70"
-          stroke={wireColor(inputs.A)}
-          strokeWidth="2"
-        />
-        <line
-          x1="60"
-          y1="120"
-          x2="120"
-          y2="120"
-          stroke={wireColor(inputs.B)}
-          strokeWidth="2"
-        />
-        <line
-          x1="60"
-          y1="170"
-          x2="120"
-          y2="170"
-          stroke={wireColor(inputs.Cin)}
-          strokeWidth="2"
-        />
-        <line
-          x1="280"
-          y1="80"
-          x2="340"
-          y2="80"
-          stroke={wireColor(outputs.Sum)}
-          strokeWidth="2"
-        />
-        <line
-          x1="280"
-          y1="160"
-          x2="340"
-          y2="160"
-          stroke={wireColor(outputs.Cout)}
-          strokeWidth="2"
-        />
-
-        <SvgInputNode
-          x={60}
-          y={70}
-          label="A"
-          value={inputs.A}
-          onToggle={() => toggleInput("A")}
-        />
-        <SvgInputNode
-          x={60}
-          y={120}
-          label="B"
-          value={inputs.B}
-          onToggle={() => toggleInput("B")}
-        />
-        <SvgInputNode
-          x={60}
-          y={170}
-          label="Cin"
-          value={inputs.Cin}
-          onToggle={() => toggleInput("Cin")}
-        />
-        <SvgOutputNode x={340} y={80} label="Sum" value={outputs.Sum} />
-        <SvgOutputNode x={340} y={160} label="Cout" value={outputs.Cout} />
-      </svg>
-    ),
+    evaluate: (i) => ({
+      Sum: (i.A ^ i.B ^ i.Cin) as LogicState,
+      Cout: ((i.A & i.B) | (i.Cin & (i.A ^ i.B))) as LogicState,
+    }),
+    blockDiagram: Diagrams.FullAdderDiagram,
   },
 
   "half-subtractor": {
@@ -999,78 +609,11 @@ export const COMBINATIONAL_CIRCUITS: Record<
       { A: 1, B: 0, Diff: 1, Borrow: 0 },
       { A: 1, B: 1, Diff: 0, Borrow: 0 },
     ],
-    blockDiagram: ({ inputs, outputs, toggleInput }) => (
-      <svg viewBox="0 0 400 240" className="w-full h-full text-zinc-900">
-        <rect
-          x="120"
-          y="40"
-          width="160"
-          height="160"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <text
-          x="200"
-          y="125"
-          textAnchor="middle"
-          fontWeight="bold"
-          fontSize="12"
-        >
-          HALF SUBTRACTOR
-        </text>
-
-        <line
-          x1="60"
-          y1="90"
-          x2="120"
-          y2="90"
-          stroke={wireColor(inputs.A)}
-          strokeWidth="2"
-        />
-        <line
-          x1="60"
-          y1="150"
-          x2="120"
-          y2="150"
-          stroke={wireColor(inputs.B)}
-          strokeWidth="2"
-        />
-        <line
-          x1="280"
-          y1="90"
-          x2="340"
-          y2="90"
-          stroke={wireColor(outputs.Diff)}
-          strokeWidth="2"
-        />
-        <line
-          x1="280"
-          y1="150"
-          x2="340"
-          y2="150"
-          stroke={wireColor(outputs.Borrow)}
-          strokeWidth="2"
-        />
-
-        <SvgInputNode
-          x={60}
-          y={90}
-          label="A"
-          value={inputs.A}
-          onToggle={() => toggleInput("A")}
-        />
-        <SvgInputNode
-          x={60}
-          y={150}
-          label="B"
-          value={inputs.B}
-          onToggle={() => toggleInput("B")}
-        />
-        <SvgOutputNode x={340} y={90} label="Diff" value={outputs.Diff} />
-        <SvgOutputNode x={340} y={150} label="Borrow" value={outputs.Borrow} />
-      </svg>
-    ),
+    evaluate: (i) => ({
+      Diff: (i.A ^ i.B) as LogicState,
+      Borrow: (i.A === 0 && i.B === 1 ? 1 : 0) as LogicState,
+    }),
+    blockDiagram: Diagrams.HalfSubtractorDiagram,
   },
 
   "full-subtractor": {
@@ -1094,93 +637,13 @@ export const COMBINATIONAL_CIRCUITS: Record<
       { A: 1, B: 1, Bin: 0, Diff: 0, Bout: 0 },
       { A: 1, B: 1, Bin: 1, Diff: 1, Bout: 1 },
     ],
-    blockDiagram: ({ inputs, outputs, toggleInput }) => (
-      <svg viewBox="0 0 400 240" className="w-full h-full text-zinc-900">
-        <rect
-          x="120"
-          y="40"
-          width="160"
-          height="160"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <text
-          x="200"
-          y="125"
-          textAnchor="middle"
-          fontWeight="bold"
-          fontSize="12"
-        >
-          FULL SUBTRACTOR
-        </text>
-
-        <line
-          x1="60"
-          y1="70"
-          x2="120"
-          y2="70"
-          stroke={wireColor(inputs.A)}
-          strokeWidth="2"
-        />
-        <line
-          x1="60"
-          y1="120"
-          x2="120"
-          y2="120"
-          stroke={wireColor(inputs.B)}
-          strokeWidth="2"
-        />
-        <line
-          x1="60"
-          y1="170"
-          x2="120"
-          y2="170"
-          stroke={wireColor(inputs.Bin)}
-          strokeWidth="2"
-        />
-        <line
-          x1="280"
-          y1="80"
-          x2="340"
-          y2="80"
-          stroke={wireColor(outputs.Diff)}
-          strokeWidth="2"
-        />
-        <line
-          x1="280"
-          y1="160"
-          x2="340"
-          y2="160"
-          stroke={wireColor(outputs.Bout)}
-          strokeWidth="2"
-        />
-
-        <SvgInputNode
-          x={60}
-          y={70}
-          label="A"
-          value={inputs.A}
-          onToggle={() => toggleInput("A")}
-        />
-        <SvgInputNode
-          x={60}
-          y={120}
-          label="B"
-          value={inputs.B}
-          onToggle={() => toggleInput("B")}
-        />
-        <SvgInputNode
-          x={60}
-          y={170}
-          label="Bin"
-          value={inputs.Bin}
-          onToggle={() => toggleInput("Bin")}
-        />
-        <SvgOutputNode x={340} y={80} label="Diff" value={outputs.Diff} />
-        <SvgOutputNode x={340} y={160} label="Bout" value={outputs.Bout} />
-      </svg>
-    ),
+    evaluate: (i) => ({
+      Diff: (i.A ^ i.B ^ i.Bin) as LogicState,
+      Bout: ((i.A === 0 && i.B === 1) || (i.Bin === 1 && (i.A ^ i.B) === 0)
+        ? 1
+        : 0) as LogicState,
+    }),
+    blockDiagram: Diagrams.FullSubtractorDiagram,
   },
 
   "mux-2-1": {
@@ -1197,81 +660,8 @@ export const COMBINATIONAL_CIRCUITS: Record<
       { S: 1, I0: 0, I1: 0, Y: 0 },
       { S: 1, I0: 0, I1: 1, Y: 1 },
     ],
-    blockDiagram: ({ inputs, outputs, toggleInput }) => (
-      <svg viewBox="0 0 400 220" className="w-full h-full text-zinc-900">
-        <path
-          d="M155,25 L245,50 L245,155 L155,175 Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <text x="200" y="105" textAnchor="middle" fontWeight="bold">
-          MUX
-        </text>
-
-        {/* I0 input */}
-        <line
-          x1="75"
-          y1="75"
-          x2="155"
-          y2="75"
-          stroke={wireColor(inputs.I0)}
-          strokeWidth="2"
-        />
-        <SvgInputNode
-          x={75}
-          y={75}
-          label="I0"
-          value={inputs.I0}
-          onToggle={() => toggleInput("I0")}
-        />
-
-        {/* I1 input */}
-        <line
-          x1="75"
-          y1="130"
-          x2="155"
-          y2="130"
-          stroke={wireColor(inputs.I1)}
-          strokeWidth="2"
-        />
-        <SvgInputNode
-          x={75}
-          y={130}
-          label="I1"
-          value={inputs.I1}
-          onToggle={() => toggleInput("I1")}
-        />
-
-        {/* Select line */}
-        <line
-          x1="200"
-          y1="164"
-          x2="200"
-          y2="210"
-          stroke={wireColor(inputs.S)}
-          strokeWidth="2"
-        />
-        <SvgInputNode
-          x={200}
-          y={200}
-          label="S"
-          value={inputs.S}
-          onToggle={() => toggleInput("S")}
-        />
-
-        {/* Output */}
-        <line
-          x1="245"
-          y1="100"
-          x2="318"
-          y2="100"
-          stroke={wireColor(outputs.Y)}
-          strokeWidth="2"
-        />
-        <SvgOutputNode x={318} y={100} label="Y" value={outputs.Y} />
-      </svg>
-    ),
+    evaluate: (i) => ({ Y: (i.S === 0 ? i.I0 : i.I1) as LogicState }),
+    blockDiagram: Diagrams.MultiplexerDiagram,
   },
 
   "demux-1-2": {
@@ -1288,73 +678,11 @@ export const COMBINATIONAL_CIRCUITS: Record<
       { S: 1, I: 0, Y0: 0, Y1: 0 },
       { S: 1, I: 1, Y0: 0, Y1: 1 },
     ],
-    blockDiagram: ({ inputs, outputs, toggleInput }) => (
-      <svg viewBox="0 0 400 220" className="w-full h-full text-zinc-900">
-        <path
-          d="M155,55 L245,30 L245,165 L155,140 Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <text x="200" y="102" textAnchor="middle" fontWeight="bold">
-          DEMUX
-        </text>
-
-        {/* Input */}
-        <line
-          x1="75"
-          y1="97"
-          x2="155"
-          y2="97"
-          stroke={wireColor(inputs.I)}
-          strokeWidth="2"
-        />
-        <SvgInputNode
-          x={75}
-          y={97}
-          label="I"
-          value={inputs.I}
-          onToggle={() => toggleInput("I")}
-        />
-
-        {/* Select line */}
-        <line
-          x1="200"
-          y1="152"
-          x2="200"
-          y2="200"
-          stroke={wireColor(inputs.S)}
-          strokeWidth="2"
-        />
-        <SvgInputNode
-          x={200}
-          y={200}
-          label="S"
-          value={inputs.S}
-          onToggle={() => toggleInput("S")}
-        />
-
-        {/* Outputs */}
-        <line
-          x1="245"
-          y1="65"
-          x2="318"
-          y2="65"
-          stroke={wireColor(outputs.Y0)}
-          strokeWidth="2"
-        />
-        <line
-          x1="245"
-          y1="130"
-          x2="318"
-          y2="130"
-          stroke={wireColor(outputs.Y1)}
-          strokeWidth="2"
-        />
-        <SvgOutputNode x={318} y={65} label="Y0" value={outputs.Y0} />
-        <SvgOutputNode x={318} y={130} label="Y1" value={outputs.Y1} />
-      </svg>
-    ),
+    evaluate: (i) => ({
+      Y0: (i.S === 0 && i.I === 1 ? 1 : 0) as LogicState,
+      Y1: (i.S === 1 && i.I === 1 ? 1 : 0) as LogicState,
+    }),
+    blockDiagram: Diagrams.DemultiplexerDiagram,
   },
 
   "decoder-2-4": {
@@ -1376,93 +704,13 @@ export const COMBINATIONAL_CIRCUITS: Record<
       { A: 1, B: 0, Y0: 0, Y1: 0, Y2: 1, Y3: 0 },
       { A: 1, B: 1, Y0: 0, Y1: 0, Y2: 0, Y3: 1 },
     ],
-    blockDiagram: ({ inputs, outputs, toggleInput }) => (
-      <svg viewBox="0 0 400 240" className="w-full h-full text-zinc-900">
-        {/* Centered: box from x=140 to x=260, y=30 to y=210 */}
-        <rect
-          x="140"
-          y="30"
-          width="120"
-          height="180"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <text x="200" y="125" textAnchor="middle" fontWeight="bold">
-          DECODER
-        </text>
-
-        {/* Inputs */}
-        <line
-          x1="75"
-          y1="85"
-          x2="140"
-          y2="85"
-          stroke={wireColor(inputs.A)}
-          strokeWidth="2"
-        />
-        <line
-          x1="75"
-          y1="155"
-          x2="140"
-          y2="155"
-          stroke={wireColor(inputs.B)}
-          strokeWidth="2"
-        />
-        <SvgInputNode
-          x={75}
-          y={85}
-          label="A"
-          value={inputs.A}
-          onToggle={() => toggleInput("A")}
-        />
-        <SvgInputNode
-          x={75}
-          y={155}
-          label="B"
-          value={inputs.B}
-          onToggle={() => toggleInput("B")}
-        />
-
-        {/* Outputs */}
-        <line
-          x1="260"
-          y1="45"
-          x2="325"
-          y2="45"
-          stroke={wireColor(outputs.Y0)}
-          strokeWidth="2"
-        />
-        <SvgOutputNode x={325} y={45} label="Y0" value={outputs.Y0} />
-        <line
-          x1="260"
-          y1="95"
-          x2="325"
-          y2="95"
-          stroke={wireColor(outputs.Y1)}
-          strokeWidth="2"
-        />
-        <SvgOutputNode x={325} y={95} label="Y1" value={outputs.Y1} />
-        <line
-          x1="260"
-          y1="145"
-          x2="325"
-          y2="145"
-          stroke={wireColor(outputs.Y2)}
-          strokeWidth="2"
-        />
-        <SvgOutputNode x={325} y={145} label="Y2" value={outputs.Y2} />
-        <line
-          x1="260"
-          y1="195"
-          x2="325"
-          y2="195"
-          stroke={wireColor(outputs.Y3)}
-          strokeWidth="2"
-        />
-        <SvgOutputNode x={325} y={195} label="Y3" value={outputs.Y3} />
-      </svg>
-    ),
+    evaluate: (i) => ({
+      Y0: (i.A === 0 && i.B === 0 ? 1 : 0) as LogicState,
+      Y1: (i.A === 0 && i.B === 1 ? 1 : 0) as LogicState,
+      Y2: (i.A === 1 && i.B === 0 ? 1 : 0) as LogicState,
+      Y3: (i.A === 1 && i.B === 1 ? 1 : 0) as LogicState,
+    }),
+    blockDiagram: Diagrams.DecoderDiagram,
   },
 
   "encoder-4-2": {
@@ -1479,113 +727,11 @@ export const COMBINATIONAL_CIRCUITS: Record<
       { I0: 0, I1: 0, I2: 1, I3: 0, A: 1, B: 0 },
       { I0: 0, I1: 0, I2: 0, I3: 1, A: 1, B: 1 },
     ],
-    blockDiagram: ({ inputs, outputs, toggleInput }) => (
-      <svg viewBox="0 0 400 240" className="w-full h-full text-zinc-900">
-        {/* Centered: box from x=140 to x=260, y=30 to y=210 */}
-        <rect
-          x="140"
-          y="30"
-          width="120"
-          height="180"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <text x="200" y="125" textAnchor="middle" fontWeight="bold">
-          ENCODER
-        </text>
-
-        {/* Inputs */}
-        <line
-          x1="75"
-          y1="45"
-          x2="140"
-          y2="45"
-          stroke={wireColor(inputs.I0)}
-          strokeWidth="2"
-        />
-        <SvgInputNode
-          x={75}
-          y={45}
-          label="I0"
-          value={inputs.I0}
-          onToggle={() => toggleInput("I0")}
-        />
-        <line
-          x1="75"
-          y1="95"
-          x2="140"
-          y2="95"
-          stroke={wireColor(inputs.I1)}
-          strokeWidth="2"
-        />
-        <SvgInputNode
-          x={75}
-          y={95}
-          label="I1"
-          value={inputs.I1}
-          onToggle={() => toggleInput("I1")}
-        />
-        <line
-          x1="75"
-          y1="145"
-          x2="140"
-          y2="145"
-          stroke={wireColor(inputs.I2)}
-          strokeWidth="2"
-        />
-        <SvgInputNode
-          x={75}
-          y={95}
-          label="I1"
-          value={inputs.I1}
-          onToggle={() => toggleInput("I1")}
-        />
-        <line
-          x1="75"
-          y1="195"
-          x2="140"
-          y2="195"
-          stroke={wireColor(inputs.I3)}
-          strokeWidth="2"
-        />
-
-        <SvgInputNode
-          x={75}
-          y={145}
-          label="I2"
-          value={inputs.I2}
-          onToggle={() => toggleInput("I2")}
-        />
-        <SvgInputNode
-          x={75}
-          y={195}
-          label="I3"
-          value={inputs.I3}
-          onToggle={() => toggleInput("I3")}
-        />
-
-        {/* Outputs */}
-        <line
-          x1="260"
-          y1="85"
-          x2="325"
-          y2="85"
-          stroke={wireColor(outputs.A)}
-          strokeWidth="2"
-        />
-        <line
-          x1="260"
-          y1="165"
-          x2="325"
-          y2="165"
-          stroke={wireColor(outputs.B)}
-          strokeWidth="2"
-        />
-        <SvgOutputNode x={325} y={85} label="A" value={outputs.A} />
-        <SvgOutputNode x={325} y={165} label="B" value={outputs.B} />
-      </svg>
-    ),
+    evaluate: (i) => ({
+      A: (i.I2 === 1 || i.I3 === 1 ? 1 : 0) as LogicState,
+      B: (i.I1 === 1 || i.I3 === 1 ? 1 : 0) as LogicState,
+    }),
+    blockDiagram: Diagrams.EncoderDiagram,
   },
 };
 
@@ -1595,7 +741,7 @@ export const SEQUENTIAL_CIRCUITS: Record<string, SequentialCircuitDefinition> =
       id: "sr-latch",
       name: "SR Latch",
       description:
-        "The Set-Reset (SR) latch is the simplest sequential circuit. It can store one bit of data.",
+        "An SR (Set-Reset) latch is a fundamental digital circuit used as a 1-bit memory element, holding a state (Q) until updated. It uses cross-coupled NOR or NAND gates to create feedback. When S=1, Q is set to 1; when R=1, Q is reset to 0. Both inputs at 1 is forbidden/invalid.",
       inputs: ["S", "R"],
       outputs: ["Q", "Q'"],
       truthTable: [
@@ -1604,170 +750,43 @@ export const SEQUENTIAL_CIRCUITS: Record<string, SequentialCircuitDefinition> =
         { S: 1, R: 0, Q: 1, "Q'": 0 },
         { S: 1, R: 1, Q: "Invalid", "Q'": "Invalid" },
       ],
-      blockDiagram: ({ inputs, outputs, toggleInput }) => (
-        <svg viewBox="0 0 400 200" className="w-full h-full text-zinc-900">
-          <rect
-            x="120"
-            y="40"
-            width="160"
-            height="120"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          />
-          <text
-            x="200"
-            y="105"
-            fontSize="16"
-            textAnchor="middle"
-            fontWeight="bold"
-          >
-            SR LATCH
-          </text>
-          <line
-            x1="60"
-            y1="70"
-            x2="120"
-            y2="70"
-            stroke={wireColor(inputs.S)}
-            strokeWidth="2"
-          />
-          <SvgInputNode
-            x={60}
-            y={70}
-            label="S"
-            value={inputs.S}
-            onToggle={() => toggleInput("S")}
-          />
-          <line
-            x1="60"
-            y1="130"
-            x2="120"
-            y2="130"
-            stroke={wireColor(inputs.R)}
-            strokeWidth="2"
-          />
-          <SvgInputNode
-            x={60}
-            y={130}
-            label="R"
-            value={inputs.R}
-            onToggle={() => toggleInput("R")}
-          />
-          <line
-            x1="280"
-            y1="70"
-            x2="340"
-            y2="70"
-            stroke={wireColor(outputs.Q)}
-            strokeWidth="2"
-          />
-          <SvgOutputNode x={340} y={70} label="Q" value={outputs.Q} />
-          <line
-            x1="280"
-            y1="130"
-            x2="340"
-            y2="130"
-            stroke={wireColor(outputs["Q'"])}
-            strokeWidth="2"
-          />
-          <SvgOutputNode x={340} y={130} label="Q'" value={outputs["Q'"]} />
-        </svg>
-      ),
+      evaluate: (inputs, prevState) => {
+        if (inputs.S === 1 && inputs.R === 1)
+          return { Q: "Invalid", "Q'": "Invalid" };
+        if (inputs.S === 1 && inputs.R === 0) return { Q: 1, "Q'": 0 };
+        if (inputs.S === 0 && inputs.R === 1) return { Q: 0, "Q'": 1 };
+        return prevState;
+      },
+      blockDiagram: Diagrams.SRLatchDiagram,
     },
     "d-flip-flop": {
       id: "d-flip-flop",
       name: "D Flip-Flop",
       description:
-        "The Data (D) flip-flop captures the value of the D-input at a specific portion of the clock cycle (such as the rising edge).",
+        "A D (Data or Delay) flip-flop is a fundamental digital circuit that stores a single bit of data (0 or 1). It operates as a synchronous device that captures the input (D) at the rising edge of the clock signal, transferring it to the output (Q), and holding that value until the next clock cycle.",
       inputs: ["D", "CLK"],
       outputs: ["Q", "Q'"],
       truthTable: [
         { D: 0, CLK: "↑", Q: 0, "Q'": 1 },
         { D: 1, CLK: "↑", Q: 1, "Q'": 0 },
       ],
-      blockDiagram: ({ inputs, outputs, toggleInput }) => (
-        <svg viewBox="0 0 400 200" className="w-full h-full text-zinc-900">
-          <rect
-            x="120"
-            y="40"
-            width="160"
-            height="120"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          />
-          <text
-            x="200"
-            y="105"
-            fontSize="16"
-            textAnchor="middle"
-            fontWeight="bold"
-          >
-            D FLIP-FLOP
-          </text>
-          <line
-            x1="60"
-            y1="70"
-            x2="120"
-            y2="70"
-            stroke={wireColor(inputs.D)}
-            strokeWidth="2"
-          />
-          <SvgInputNode
-            x={60}
-            y={70}
-            label="D"
-            value={inputs.D}
-            onToggle={() => toggleInput("D")}
-          />
-          <polyline
-            points="120,120 130,130 120,140"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          />
-          <line
-            x1="60"
-            y1="130"
-            x2="120"
-            y2="130"
-            stroke={wireColor(inputs.CLK)}
-            strokeWidth="2"
-          />
-          <SvgInputNode
-            x={60}
-            y={130}
-            label="CLK"
-            value={inputs.CLK}
-            onToggle={() => toggleInput("CLK")}
-          />
-          <line
-            x1="280"
-            y1="70"
-            x2="340"
-            y2="70"
-            stroke={wireColor(outputs.Q)}
-            strokeWidth="2"
-          />
-          <SvgOutputNode x={340} y={70} label="Q" value={outputs.Q} />
-          <line
-            x1="280"
-            y1="130"
-            x2="340"
-            y2="130"
-            stroke={wireColor(outputs["Q'"])}
-            strokeWidth="2"
-          />
-          <SvgOutputNode x={340} y={130} label="Q'" value={outputs["Q'"]} />
-        </svg>
-      ),
+      evaluate: (inputs, prevState, isRisingEdge) => {
+        if (isRisingEdge) {
+          const val = inputs.D === 1 ? 1 : 0;
+          return {
+            Q: val as LogicState,
+            "Q'": (val === 1 ? 0 : 1) as LogicState,
+          };
+        }
+        return prevState;
+      },
+      blockDiagram: Diagrams.DFlipFlopDiagram,
     },
     "jk-flip-flop": {
       id: "jk-flip-flop",
       name: "JK Flip-Flop",
       description:
-        "The JK flip-flop is a universal flip-flop because it can be configured to work as an SR, D, or T flip-flop.",
+        "The JK flip-flop is a universal synchronous memory element that eliminates the invalid state of the SR latch. It operates on the rising edge of the clock: J=1 and K=0 sets Q to 1; J=0 and K=1 resets Q to 0; and J=1 and K=1 toggles the output Q to its complement.",
       inputs: ["J", "K", "CLK"],
       outputs: ["Q", "Q'"],
       truthTable: [
@@ -1776,302 +795,48 @@ export const SEQUENTIAL_CIRCUITS: Record<string, SequentialCircuitDefinition> =
         { J: 1, K: 0, CLK: "↑", Q: 1, "Q'": 0 },
         { J: 1, K: 1, CLK: "↑", Q: "Toggle", "Q'": "Toggle" },
       ],
-      blockDiagram: ({ inputs, outputs, toggleInput }) => (
-        <svg viewBox="0 0 400 200" className="w-full h-full text-zinc-900">
-          <rect
-            x="120"
-            y="20"
-            width="160"
-            height="155"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          />
-          <text
-            x="200"
-            y="105"
-            fontSize="16"
-            textAnchor="middle"
-            fontWeight="bold"
-          >
-            JK FLIP-FLOP
-          </text>
-          <line
-            x1="60"
-            y1="45"
-            x2="120"
-            y2="45"
-            stroke={wireColor(inputs.J)}
-            strokeWidth="2"
-          />
-          <SvgInputNode
-            x={60}
-            y={45}
-            label="J"
-            value={inputs.J}
-            onToggle={() => toggleInput("J")}
-          />
-          <polyline
-            points="120,90 130,100 120,110"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          />
-          <line
-            x1="60"
-            y1="100"
-            x2="120"
-            y2="100"
-            stroke={wireColor(inputs.CLK)}
-            strokeWidth="2"
-          />
-          <SvgInputNode
-            x={60}
-            y={100}
-            label="CLK"
-            value={inputs.CLK}
-            onToggle={() => toggleInput("CLK")}
-          />
-          <line
-            x1="60"
-            y1="150"
-            x2="120"
-            y2="150"
-            stroke={wireColor(inputs.K)}
-            strokeWidth="2"
-          />
-          <SvgInputNode
-            x={60}
-            y={150}
-            label="K"
-            value={inputs.K}
-            onToggle={() => toggleInput("K")}
-          />
-          <line
-            x1="280"
-            y1="70"
-            x2="340"
-            y2="70"
-            stroke={wireColor(outputs.Q)}
-            strokeWidth="2"
-          />
-          <SvgOutputNode x={340} y={70} label="Q" value={outputs.Q} />
-          <line
-            x1="280"
-            y1="130"
-            x2="340"
-            y2="130"
-            stroke={wireColor(outputs["Q'"])}
-            strokeWidth="2"
-          />
-          <SvgOutputNode x={340} y={130} label="Q'" value={outputs["Q'"]} />
-        </svg>
-      ),
+      evaluate: (inputs, prevState, isRisingEdge) => {
+        // 1. If no rising edge, the state MUST persist exactly as is
+        if (!isRisingEdge) return prevState;
+
+        const { J, K } = inputs;
+        const currentQ = prevState.Q === 1 ? 1 : 0;
+
+        // 2. Explicit JK Logic
+        if (J === 1 && K === 1) {
+          // TOGGLE: Flip based on the LAST known state in the Ref
+          const nextQ = currentQ ^ 1;
+          return { Q: nextQ, "Q'": nextQ ^ 1 };
+        }
+
+        if (J === 1 && K === 0) return { Q: 1, "Q'": 0 }; // SET
+        if (J === 0 && K === 1) return { Q: 0, "Q'": 1 }; // RESET
+
+        return prevState as any; // HOLD (J=0, K=0)
+      },
+      blockDiagram: Diagrams.JKFlipFlopDiagram,
     },
     "t-flip-flop": {
       id: "t-flip-flop",
       name: "T Flip-Flop",
       description:
-        "The Toggle (T) flip-flop changes its output state on every clock pulse if the T input is high.",
+        "A T (Toggle) flip-flop is a synchronous device that changes its state on every clock pulse when the T input is HIGH. If T is LOW, it holds the current state. It is essentially a JK flip-flop with both inputs tied together, commonly used in frequency dividers and binary counters.",
       inputs: ["T", "CLK"],
       outputs: ["Q", "Q'"],
       truthTable: [
         { T: 0, CLK: "↑", Q: "NC", "Q'": "NC" },
         { T: 1, CLK: "↑", Q: "Toggle", "Q'": "Toggle" },
       ],
-      blockDiagram: ({ inputs, outputs, toggleInput }) => (
-        <svg viewBox="0 0 400 200" className="w-full h-full text-zinc-900">
-          <rect
-            x="120"
-            y="40"
-            width="160"
-            height="120"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          />
-          <text
-            x="200"
-            y="105"
-            fontSize="16"
-            textAnchor="middle"
-            fontWeight="bold"
-          >
-            T FLIP-FLOP
-          </text>
-          <line
-            x1="60"
-            y1="70"
-            x2="120"
-            y2="70"
-            stroke={wireColor(inputs.T)}
-            strokeWidth="2"
-          />
-          <SvgInputNode
-            x={60}
-            y={70}
-            label="T"
-            value={inputs.T}
-            onToggle={() => toggleInput("T")}
-          />
-          <polyline
-            points="120,120 130,130 120,140"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          />
-          <line
-            x1="60"
-            y1="130"
-            x2="120"
-            y2="130"
-            stroke={wireColor(inputs.CLK)}
-            strokeWidth="2"
-          />
-          <SvgInputNode
-            x={60}
-            y={130}
-            label="CLK"
-            value={inputs.CLK}
-            onToggle={() => toggleInput("CLK")}
-          />
-          <line
-            x1="280"
-            y1="70"
-            x2="340"
-            y2="70"
-            stroke={wireColor(outputs.Q)}
-            strokeWidth="2"
-          />
-          <SvgOutputNode x={340} y={70} label="Q" value={outputs.Q} />
-          <line
-            x1="280"
-            y1="130"
-            x2="340"
-            y2="130"
-            stroke={wireColor(outputs["Q'"])}
-            strokeWidth="2"
-          />
-          <SvgOutputNode x={340} y={130} label="Q'" value={outputs["Q'"]} />
-        </svg>
-      ),
+      evaluate: (inputs, prevState, isRisingEdge) => {
+        if (isRisingEdge && inputs.T === 1) {
+          const nextQ = prevState.Q === 1 ? 0 : 1;
+          return {
+            Q: nextQ,
+            "Q'": nextQ === 0 ? 1 : 0,
+          };
+        }
+        return prevState;
+      },
+      blockDiagram: Diagrams.TFlipFlopDiagram,
     },
-    // counter: {
-    //   id: "counter",
-    //   name: "4-bit Binary Counter",
-    //   description:
-    //     "A sequential circuit that counts from 0 to 15 in binary. It increments on each clock pulse.",
-    //   inputs: ["CLK", "CLR"],
-    //   outputs: ["Q3", "Q2", "Q1", "Q0"],
-    //   truthTable: [
-    //     {
-    //       CLK: "↑",
-    //       CLR: 0,
-    //       Q3: "-",
-    //       Q2: "-",
-    //       Q1: "-",
-    //       Q0: "-",
-    //       Action: "Count++",
-    //     },
-    //     { CLK: "X", CLR: 1, Q3: 0, Q2: 0, Q1: 0, Q0: 0, Action: "Reset" },
-    //   ],
-    //   blockDiagram: ({ inputs, outputs, toggleInput }) => (
-    //     <svg viewBox="0 0 400 240" className="w-full h-full text-zinc-900">
-    //       {/* Box */}
-    //       <rect
-    //         x="120"
-    //         y="20"
-    //         width="160"
-    //         height="200"
-    //         fill="none"
-    //         stroke="currentColor"
-    //         strokeWidth="2"
-    //       />
-    //       <text
-    //         x="200"
-    //         y="125"
-    //         fontSize="13"
-    //         textAnchor="middle"
-    //         fontWeight="bold"
-    //       >
-    //         4-BIT COUNTER
-    //       </text>
-    //       {/* CLK clock */}
-    //       <polyline
-    //         points="120,85 132,95 120,105"
-    //         fill="none"
-    //         stroke="currentColor"
-    //         strokeWidth="2"
-    //       />
-    //       {/* Input wires */}
-    //       <line
-    //         x1="55"
-    //         y1="95"
-    //         x2="120"
-    //         y2="95"
-    //         stroke={wireColor(inputs.CLK)}
-    //         strokeWidth="2"
-    //       />
-    //       <SvgInputNode
-    //         x={55}
-    //         y={95}
-    //         label="CLK"
-    //         value={inputs.CLK}
-    //         onToggle={() => toggleInput("CLK")}
-    //       />
-    //       <line
-    //         x1="55"
-    //         y1="155"
-    //         x2="120"
-    //         y2="155"
-    //         stroke={wireColor(inputs.CLR)}
-    //         strokeWidth="2"
-    //       />
-    //       <SvgInputNode
-    //         x={55}
-    //         y={155}
-    //         label="CLR"
-    //         value={inputs.CLR}
-    //         onToggle={() => toggleInput("CLR")}
-    //       />
-    //       {/* Output wires */}
-    //       <line
-    //         x1="280"
-    //         y1="45"
-    //         x2="345"
-    //         y2="45"
-    //         stroke={wireColor(outputs.Q3)}
-    //         strokeWidth="2"
-    //       />
-    //       <SvgOutputNode x={345} y={45} label="Q3" value={outputs.Q3} />
-    //       <line
-    //         x1="280"
-    //         y1="95"
-    //         x2="345"
-    //         y2="95"
-    //         stroke={wireColor(outputs.Q2)}
-    //         strokeWidth="2"
-    //       />
-    //       <SvgOutputNode x={345} y={95} label="Q2" value={outputs.Q2} />
-    //       <line
-    //         x1="280"
-    //         y1="145"
-    //         x2="345"
-    //         y2="145"
-    //         stroke={wireColor(outputs.Q1)}
-    //         strokeWidth="2"
-    //       />
-    //       <SvgOutputNode x={345} y={145} label="Q1" value={outputs.Q1} />
-    //       <line
-    //         x1="280"
-    //         y1="195"
-    //         x2="345"
-    //         y2="195"
-    //         stroke={wireColor(outputs.Q0)}
-    //         strokeWidth="2"
-    //       />
-    //       <SvgOutputNode x={345} y={195} label="Q0" value={outputs.Q0} />
-    //     </svg>
-    //   ),
-    // },
   };
