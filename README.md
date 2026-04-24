@@ -14,7 +14,7 @@ Learning digital logic from textbooks alone can feel abstract. GateLabs bridges 
 
 ### Logic Gates
 
-GateLabs covers the seven fundamental logic gates: AND, OR, NOT, NOR, XOR, XNOR, and NAND.
+GateLabs covers the seven fundamental logic gates: AND, OR, NOT, NAND, NOR, XOR, and XNOR.
 
 For each gate you get:
 
@@ -23,6 +23,47 @@ For each gate you get:
 - **Truth table** — dynamically generated for all possible input combinations, so you can verify behaviour at a glance.
 - **Plain-language explanation** — a concise description of what the gate does and when it outputs high or low.
 - **Mnemonic** — a short memory aid to help you remember each gate's behaviour (for example, AND as "all must agree", OR as "one is enough", XOR as "one but not both").
+
+### Combinational Circuits
+
+GateLabs now includes a set of standard combinational circuits used in arithmetic and signal routing:
+
+| Circuit | Description |
+|---------|-------------|
+| Half Adder | Adds two bits to produce Sum and Carry outputs. |
+| Full Adder | Adds three bits (A, B, Cin) to produce Sum and Cout. |
+| Half Subtractor | Subtracts B from A to generate Difference and Borrow. |
+| Full Subtractor | Subtracts B and Bin from A to produce Difference and Bout. |
+| 2-to-1 Multiplexer | Selects one of two inputs (I0 or I1) based on selector S. |
+| 1-to-2 Demultiplexer | Routes a single input I to either Y0 or Y1 depending on S. |
+| 2-to-4 Decoder | Converts 2-bit input into one of four unique output lines. |
+| 4-to-2 Encoder | Encodes one active input line into a 2-bit binary output. |
+
+For each combinational circuit you get:
+
+- **Interactive signal toggles** — change inputs and observe outputs and wiring instantly.
+- **Block diagram** — a simplified visual that shows how input and output nodes are connected.
+- **Truth table** — all valid input/output combinations for the circuit.
+- **Boolean expression** — the circuit's logic equations shown in readable form.
+- **Optimized circuit diagrams** — images from Cloudinary with instant loading and fade-in animations for seamless transitions between circuits.
+
+### Sequential Circuits
+
+GateLabs also supports stateful sequential circuits that depend on clock or memory behavior:
+
+| Circuit | Description |
+|---------|-------------|
+| SR Latch | A basic memory element that sets or resets output Q depending on S and R. |
+| D Flip-Flop | Captures the D input on the rising clock edge and holds it until the next edge. |
+| JK Flip-Flop | A versatile edge-triggered flip-flop that can set, reset, hold, or toggle state. |
+| T Flip-Flop | A toggle flip-flop that changes state on each active clock pulse when T is high. |
+
+For each sequential circuit you get:
+
+- **Stateful output behavior** — outputs can hold previous values and change only on clock events.
+- **Clock-aware simulation** — supports rising-edge triggering for flip-flop circuits.
+- **Truth/State table** — shows how inputs and clock transitions map to next-state outputs.
+- **Interactive block diagram** — see the effect of signal changes in a state machine style diagram.
 
 ### Integrated Circuits (ICs)
 
@@ -47,14 +88,27 @@ For each IC you get:
 
 ---
 
+## Key Features
+
+- **100% Free & Open Source** — MIT licensed, hosted on GitHub.
+- **No Installation Required** — runs entirely in the browser.
+- **Real-time Interactive Simulation** — toggle inputs and watch outputs update instantly.
+- **Mobile Responsive** — works on desktop, tablet, and mobile devices.
+- **Production Ready** — optimized performance with preloaded cloud images, smooth animations, and zero console errors.
+
+---
+
 ## Roadmap
 
 GateLabs is being built in focused versions. Here is what is planned:
 
 ### v1 — Current
-- Logic Gates module (AND, OR, NOT, NOT, XOR, XNOR, NAND)
+- Logic Gates module (AND, OR, NOT, NAND, XOR, XNOR, NAND)
+- Combinational Circuits (Half/Full Adder, Half/Full Subtractor, Multiplexers, Encoders, Decoders)
+- Sequential Circuits (Latches, Flip-flops)
 - ICs module (7400, 7402, 7404, 7408, 7432, 7486, 74266)
 - Truth tables, diagrams, mnemonics, and pin configurations
+- Optimized image loading with CDN delivery
 
 ### v2 — Planned
 - **Playground** — a drag-and-drop canvas to build your own circuits using gates, ICs, power sources (Vcc, Gnd), and LED output indicators

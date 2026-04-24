@@ -1,12 +1,12 @@
 // Sequential circuit state management utilities
 import { useState, useRef, useEffect, useCallback } from "react";
-import { CircuitState } from "@/src/libs/types";
+import { CircuitState, SequentialCircuitDefinition } from "@/src/libs/types";
 
 /**
  * Custom hook for sequential circuit evaluation.
  * Tracks inputs, outputs, and previous state for edge-triggered logic.
  */
-export const useSequential = (circuitConfig: any) => {
+export const useSequential = (circuitConfig: SequentialCircuitDefinition) => {
   const [inputs, setInputs] = useState<Record<string, number>>({});
   const [outputs, setOutputs] = useState<CircuitState>({});
   const stateRef = useRef<CircuitState>({});

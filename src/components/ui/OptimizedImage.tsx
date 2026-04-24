@@ -31,9 +31,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
 
   if (error) {
     return (
-      <div
-        className={`flex items-center justify-center bg-zinc-100 border border-zinc-300 rounded ${className}`}
-      >
+      <div className={`flex items-center justify-center ${className}`}>
         <p className="text-zinc-500 text-sm">Failed to load image</p>
       </div>
     );
@@ -47,7 +45,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className={`flex items-center justify-center bg-zinc-50 border border-zinc-200 rounded animate-pulse ${className}`}
+          className={`flex items-center justify-center animate-pulse ${className}`}
         >
           <p className="text-zinc-400 text-sm">Loading image...</p>
         </motion.div>

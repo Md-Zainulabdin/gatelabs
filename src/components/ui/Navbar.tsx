@@ -29,7 +29,7 @@ const Navbar = ({
 
   return (
     <nav className="border-b border-zinc-200 bg-white text-zinc-900 lg:sticky lg:top-0 lg:z-50">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-6 lg:px-8 py-1">
         <div className="flex justify-between h-14 items-center">
           {/* Left — Brand */}
           <div className="flex items-center gap-5">
@@ -50,32 +50,32 @@ const Navbar = ({
               <div className="flex space-x-6">
                 <button
                   onClick={() => handleTab("gates")}
-                  className={`font-geist text-[11px] font-semibold tracking-widest uppercase transition-colors ${activeTab === "gates" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
+                  className={`text-[11px] font-semibold tracking-widest uppercase transition-colors ${activeTab === "gates" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
                 >
                   Logic Gates
                 </button>
                 <button
                   onClick={() => handleTab("combinational")}
-                  className={`font-geist text-[11px] font-semibold tracking-widest uppercase transition-colors ${activeTab === "combinational" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
+                  className={`text-[11px] font-semibold tracking-widest uppercase transition-colors ${activeTab === "combinational" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
                 >
                   Combinational
                 </button>
                 <button
                   onClick={() => handleTab("sequential")}
-                  className={`font-geist text-[11px] font-semibold tracking-widest uppercase transition-colors ${activeTab === "sequential" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
+                  className={`text-[11px] font-semibold tracking-widest uppercase transition-colors ${activeTab === "sequential" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
                 >
                   Sequential
                 </button>
                 <button
                   onClick={() => handleTab("ics")}
-                  className={`font-geist text-[11px] font-semibold tracking-widest uppercase transition-colors ${activeTab === "ics" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
+                  className={`text-[11px] font-semibold tracking-widest uppercase transition-colors ${activeTab === "ics" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`}
                 >
                   IC's
                 </button>
                 <div className="flex items-center gap-1.5">
                   <button
                     disabled
-                    className="font-geist text-[11px] font-semibold tracking-widest uppercase text-zinc-300 cursor-not-allowed"
+                    className="text-[11px] font-semibold tracking-widest uppercase text-zinc-300 cursor-not-allowed"
                   >
                     Playground
                   </button>
@@ -90,7 +90,7 @@ const Navbar = ({
           {/* Right — GitHub + hamburger */}
           <div className="flex items-center gap-3">
             <a
-              href="https://github.com/Md-Zainulabdin/gatelabs.git"
+              href="https://github.com/Md-Zainulabdin/gatelabs"
               target="_blank"
               rel="noopener noreferrer"
               className="flex gap-2 items-center px-3 py-1 hover:bg-zinc-100 rounded-md transition-colors"
@@ -137,38 +137,38 @@ const Navbar = ({
       {/* Mobile dropdown menu */}
       <div
         className={`md:hidden border-t border-zinc-100 bg-white overflow-hidden transition-all duration-300 ease-in-out ${
-          menuOpen ? "max-h-48 opacity-100" : "max-h-0 opacity-0"
+          menuOpen ? "max-h-56 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="px-4 py-4 flex flex-col gap-4">
+        <div className="px-4 py-4 flex flex-col gap-6">
           <button
             onClick={() => handleTab("gates")}
-            className={`text-left font-mono text-xs font-semibold tracking-widest uppercase transition-colors ${activeTab === "gates" ? "text-zinc-900" : "text-zinc-500"}`}
+            className={`text-left text-xs font-semibold tracking-widest uppercase transition-colors ${activeTab === "gates" ? "text-zinc-900" : "text-zinc-500"}`}
           >
             Logic Gates
           </button>
           <button
             onClick={() => handleTab("combinational")}
-            className={`text-left font-mono text-xs font-semibold tracking-widest uppercase transition-colors ${activeTab === "combinational" ? "text-zinc-900" : "text-zinc-500"}`}
+            className={`text-left text-xs font-semibold tracking-widest uppercase transition-colors ${activeTab === "combinational" ? "text-zinc-900" : "text-zinc-500"}`}
           >
             Combinational
           </button>
           <button
             onClick={() => handleTab("sequential")}
-            className={`text-left font-mono text-xs font-semibold tracking-widest uppercase transition-colors ${activeTab === "sequential" ? "text-zinc-900" : "text-zinc-500"}`}
+            className={`text-left text-xs font-semibold tracking-widest uppercase transition-colors ${activeTab === "sequential" ? "text-zinc-900" : "text-zinc-500"}`}
           >
             Sequential
           </button>
           <button
             onClick={() => handleTab("ics")}
-            className={`text-left font-mono text-xs font-semibold tracking-widest uppercase transition-colors ${activeTab === "ics" ? "text-zinc-900" : "text-zinc-500"}`}
+            className={`text-left text-xs font-semibold tracking-widest uppercase transition-colors ${activeTab === "ics" ? "text-zinc-900" : "text-zinc-500"}`}
           >
             IC's
           </button>
           <div className="flex items-center gap-1.5">
             <button
               disabled
-              className="font-mono text-xs font-semibold tracking-widest uppercase text-zinc-300 cursor-not-allowed"
+              className="text-xs font-semibold tracking-widest uppercase text-zinc-300 cursor-not-allowed"
             >
               Playground
             </button>

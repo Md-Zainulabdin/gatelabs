@@ -3,7 +3,7 @@ const Footer = () => {
     <footer className="border-t w-full border-zinc-200 py-12 bg-white">
       <div className="mx-auto px-4 text-center">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <span className="text-md font-bold tracking-tight text-zinc-900 uppercase font-mono">
+          <span className="text-sm font-bold tracking-tight text-zinc-900 uppercase font-mono">
             GateLabs
           </span>
         </div>
