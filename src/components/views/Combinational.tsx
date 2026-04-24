@@ -4,6 +4,7 @@ import { useCombinational } from "@/src/hooks/useCombinational";
 import { COMBINATIONAL_CIRCUITS } from "@/src/libs/constants";
 import { SidebarSelection } from "@/src/components/ui/SidebarSelection";
 import { TruthTable } from "@/src/components/ui/TruthTable";
+import { OptimizedImage } from "@/src/components/ui/OptimizedImage";
 
 /**
  * View for combinational circuits.
@@ -39,7 +40,7 @@ export const CombinationalView = () => {
 
       <div className="lg:col-span-2">
         <div className="card p-6 space-y-12">
-          {/* Title */}
+          {/* Title & Description */}
 
           <div>
             <h1 className="text-3xl font-bold mb-2">{circuit.name}</h1>
@@ -62,6 +63,20 @@ export const CombinationalView = () => {
               </div>
             ))}
           </div>
+
+          {/* Circuit Diagram */}
+
+          {circuit.imagePath && (
+            <div className="space-y-3">
+              <h3 className="section-heading">Circuit Diagram</h3>
+
+              <div className="panel-block">
+                <div className="w-full max-w-md flex items-center justify-center">
+                  <OptimizedImage src={circuit.imagePath} alt={circuit.name} />
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Block Diagram */}
 

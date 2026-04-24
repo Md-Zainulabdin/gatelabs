@@ -36,6 +36,8 @@ export const GATES: Record<GateType, GateDefinition> = {
       { inputs: [1, 0], output: 0 },
       { inputs: [1, 1], output: 1 },
     ],
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031752/AND_Gate_lveezh.png",
   },
   [GateType.OR]: {
     type: GateType.OR,
@@ -49,10 +51,12 @@ export const GATES: Record<GateType, GateDefinition> = {
       { inputs: [1, 0], output: 1 },
       { inputs: [1, 1], output: 1 },
     ],
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031753/OR_Gate_lrk9ou.png",
   },
   [GateType.NOT]: {
     type: GateType.NOT,
-    name: "NOT Gate (Inverter)",
+    name: "NOT Gate",
     mnemonic: "The opposite",
     description: "Inverts the input signal.",
     expression: "Y = ¬A",
@@ -60,6 +64,8 @@ export const GATES: Record<GateType, GateDefinition> = {
       { inputs: [0], output: 1 },
       { inputs: [1], output: 0 },
     ],
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031752/NOT_Gate_c9sw0k.png",
   },
   [GateType.NAND]: {
     type: GateType.NAND,
@@ -73,6 +79,8 @@ export const GATES: Record<GateType, GateDefinition> = {
       { inputs: [1, 0], output: 1 },
       { inputs: [1, 1], output: 0 },
     ],
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031752/NAND_Gate_zvhyjk.png",
   },
   [GateType.NOR]: {
     type: GateType.NOR,
@@ -86,6 +94,8 @@ export const GATES: Record<GateType, GateDefinition> = {
       { inputs: [1, 0], output: 0 },
       { inputs: [1, 1], output: 0 },
     ],
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031752/NOR_Gate_zamvaj.png",
   },
   [GateType.XOR]: {
     type: GateType.XOR,
@@ -99,6 +109,8 @@ export const GATES: Record<GateType, GateDefinition> = {
       { inputs: [1, 0], output: 1 },
       { inputs: [1, 1], output: 0 },
     ],
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031754/XOR_Gate_ofengf.png",
   },
   [GateType.XNOR]: {
     type: GateType.XNOR,
@@ -112,6 +124,8 @@ export const GATES: Record<GateType, GateDefinition> = {
       { inputs: [1, 0], output: 0 },
       { inputs: [1, 1], output: 1 },
     ],
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031754/XNOR_Gate_bcjmza.png",
   },
 };
 
@@ -565,6 +579,8 @@ export const COMBINATIONAL_CIRCUITS: Record<
       Carry: (i.A & i.B) as LogicState,
     }),
     blockDiagram: Diagrams.HalfAdderDiagram,
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031842/half_adder_vcorzr.png",
   },
 
   "full-adder": {
@@ -593,6 +609,8 @@ export const COMBINATIONAL_CIRCUITS: Record<
       Cout: ((i.A & i.B) | (i.Cin & (i.A ^ i.B))) as LogicState,
     }),
     blockDiagram: Diagrams.FullAdderDiagram,
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031840/full-adder_kvopsq.png",
   },
 
   "half-subtractor": {
@@ -614,6 +632,8 @@ export const COMBINATIONAL_CIRCUITS: Record<
       Borrow: (i.A === 0 && i.B === 1 ? 1 : 0) as LogicState,
     }),
     blockDiagram: Diagrams.HalfSubtractorDiagram,
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031843/half_subtractor_md1xmt.png",
   },
 
   "full-subtractor": {
@@ -644,6 +664,8 @@ export const COMBINATIONAL_CIRCUITS: Record<
         : 0) as LogicState,
     }),
     blockDiagram: Diagrams.FullSubtractorDiagram,
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031841/full-subtractor_kjoc2s.png",
   },
 
   "mux-2-1": {
@@ -662,6 +684,8 @@ export const COMBINATIONAL_CIRCUITS: Record<
     ],
     evaluate: (i) => ({ Y: (i.S === 0 ? i.I0 : i.I1) as LogicState }),
     blockDiagram: Diagrams.MultiplexerDiagram,
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031844/mux_swshx0.png",
   },
 
   "demux-1-2": {
@@ -683,6 +707,8 @@ export const COMBINATIONAL_CIRCUITS: Record<
       Y1: (i.S === 1 && i.I === 1 ? 1 : 0) as LogicState,
     }),
     blockDiagram: Diagrams.DemultiplexerDiagram,
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031838/demux_scpf0u.png",
   },
 
   "decoder-2-4": {
@@ -711,6 +737,8 @@ export const COMBINATIONAL_CIRCUITS: Record<
       Y3: (i.A === 1 && i.B === 1 ? 1 : 0) as LogicState,
     }),
     blockDiagram: Diagrams.DecoderDiagram,
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031837/decoder_pvurqv.png",
   },
 
   "encoder-4-2": {
@@ -732,6 +760,8 @@ export const COMBINATIONAL_CIRCUITS: Record<
       B: (i.I1 === 1 || i.I3 === 1 ? 1 : 0) as LogicState,
     }),
     blockDiagram: Diagrams.EncoderDiagram,
+    imagePath:
+      "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031839/encoder_dx8bkn.png",
   },
 };
 
@@ -758,6 +788,8 @@ export const SEQUENTIAL_CIRCUITS: Record<string, SequentialCircuitDefinition> =
         return prevState;
       },
       blockDiagram: Diagrams.SRLatchDiagram,
+      imagePath:
+        "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031907/sr-latch_prhfzo.png",
     },
     "d-flip-flop": {
       id: "d-flip-flop",
@@ -781,6 +813,8 @@ export const SEQUENTIAL_CIRCUITS: Record<string, SequentialCircuitDefinition> =
         return prevState;
       },
       blockDiagram: Diagrams.DFlipFlopDiagram,
+      imagePath:
+        "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031905/d-flipflop_eaaicp.png",
     },
     "jk-flip-flop": {
       id: "jk-flip-flop",
@@ -815,6 +849,8 @@ export const SEQUENTIAL_CIRCUITS: Record<string, SequentialCircuitDefinition> =
         return prevState as any; // HOLD (J=0, K=0)
       },
       blockDiagram: Diagrams.JKFlipFlopDiagram,
+      imagePath:
+        "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031906/jk-flipflop_ljxyfm.png",
     },
     "t-flip-flop": {
       id: "t-flip-flop",
@@ -838,5 +874,7 @@ export const SEQUENTIAL_CIRCUITS: Record<string, SequentialCircuitDefinition> =
         return prevState;
       },
       blockDiagram: Diagrams.TFlipFlopDiagram,
+      imagePath:
+        "https://res.cloudinary.com/dgzbtudyi/image/upload/v1777031908/t-flipflop_bowsnp.png",
     },
   };

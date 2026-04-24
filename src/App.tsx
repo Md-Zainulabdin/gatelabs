@@ -37,19 +37,6 @@ export default function App() {
           </motion.div>
         </AnimatePresence>
       </main>
-
-      <footer className="border-t border-zinc-100 py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <span className="text-sm font-bold tracking-tight text-zinc-900 uppercase font-mono">
-              GateLabs
-            </span>
-          </div>
-          <p className="text-xs text-zinc-400">
-            © 2026 GateLabs. Educational resource for digital logic design.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

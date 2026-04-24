@@ -34,12 +34,15 @@ export const ICsView = () => {
       </div>
 
       {/* CONTENT */}
-      <div className="lg:col-span-2 space-y-8">
-        <div className="card">
-          <div className="flex justify-between items-start mb-6">
+      <div className="lg:col-span-2">
+        <div className="card p-6 space-y-12">
+          <div className="flex justify-between items-start gap-4">
             <div>
-              <h1 className="text-3xl font-bold mb-1">{ic.name}</h1>
-              <p className="text-zinc-500 text-sm">Standard DIP-14 Package</p>
+              <h1 className="text-3xl font-bold mb-2">{ic.name}</h1>
+
+              <p className="text-zinc-500 leading-relaxed">
+                Standard DIP-14 Package
+              </p>
             </div>
             <a
               href={ic.datasheetUrl}
@@ -52,11 +55,11 @@ export const ICsView = () => {
             </a>
           </div>
 
-          <p className="text-zinc-600 mb-8 leading-relaxed text-lg">
+          <p className="text-zinc-500 leading-relaxed max-w-2xl">
             {ic.description}
           </p>
 
-          <div className="space-y-8">
+          <div className="space-y-12">
             <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2 bg-zinc-50 border border-zinc-100 p-8 flex justify-center items-center">
                 <div className="relative w-48 h-64 bg-zinc-800 border-4 border-zinc-700 rounded-sm flex flex-col items-center justify-center">
@@ -109,7 +112,6 @@ export const ICsView = () => {
                       <th className="text-center text-[10px]">Pin</th>
                       <th className="text-center text-[10px]">Name</th>
                       <th className="text-center text-[10px]">Type</th>
-                      <th className="text-center text-[10px]">Description</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-100">
@@ -130,9 +132,6 @@ export const ICsView = () => {
                           >
                             {pin.type}
                           </span>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-zinc-500">
-                          {pin.description}
                         </td>
                       </tr>
                     ))}

@@ -96,6 +96,7 @@ export interface GateDefinition {
   description: string;
   expression: string;
   truthTable: { inputs: LogicValue[]; output: LogicValue }[];
+  imagePath: string;
 }
 
 export interface BlockDiagramProps {
@@ -112,6 +113,7 @@ export interface CombinationalCircuitDefinition {
   outputs: string[];
   expression: string[];
   truthTable: Record<string, LogicState>[];
+  imagePath?: string;
   // Combinational doesn't need prevState
   evaluate: (inputs: Record<string, number>) => CircuitState;
   blockDiagram: (props: BlockDiagramProps) => React.ReactNode;
@@ -131,4 +133,5 @@ export interface SequentialCircuitDefinition {
     isRisingEdge: boolean,
   ) => CircuitState;
   blockDiagram: (props: BlockDiagramProps) => React.ReactNode;
+  imagePath?: string;
 }

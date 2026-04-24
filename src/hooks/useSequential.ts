@@ -24,6 +24,18 @@ export const useSequential = (circuitConfig: any) => {
     stateRef.current = initOutputs;
   }, [circuitConfig]);
 
+  const reset = useCallback(() => {
+    const initInputs: Record<string, number> = {};
+    circuitConfig.inputs.forEach((inp: string) => (initInputs[inp] = 0));
+
+    const initOutputs: CircuitState = {};
+    circuitConfig.outputs.forEach((o: string) => (initOutputs[o] = 0));
+
+    setInputs(initInputs);
+    setOutputs(initOutputs);
+    stateRef.current = initOutputs;
+  }, [circuitConfig]);
+
   const toggleInput = useCallback((name: string) => {
     // 1. Capture current values from the closure
     const currentVal = inputs[name];
@@ -54,5 +66,5 @@ export const useSequential = (circuitConfig: any) => {
   }, [inputs, circuitConfig]); 
   
 
-  return { inputs, outputs, toggleInput };
+  return { inputs, outputs, toggleInput, reset };
 };

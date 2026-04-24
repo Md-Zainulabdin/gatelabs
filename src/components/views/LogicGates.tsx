@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Lightbulb, ArrowRight } from "lucide-react";
-import { evaluateGate, GATES, GateSymbol } from "@/src/libs/constants";
+import { evaluateGate, GATES } from "@/src/libs/constants";
+import GateBlockDiagram from "@/src/components/diagrams/GateBlockDiagram";
 import { GateType, LogicValue } from "@/src/libs/types";
 import { SidebarSelection } from "@/src/components/ui/SidebarSelection";
 import { TruthTable } from "@/src/components/ui/TruthTable";
+import { OptimizedImage } from "@/src/components/ui/OptimizedImage";
 
 /**
  * View for primitive logic gates.
@@ -56,77 +57,64 @@ export const LogicGatesView = () => {
       </div>
 
       {/* CONTENT */}
-      <div className="lg:col-span-2 space-y-8">
-        <div className="card">
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <h1 className="text-3xl font-bold mb-1">{gate.name}</h1>
-              <p className="text-zinc-500 font-medium text-lg">
-                "{gate.mnemonic}"
-              </p>
-            </div>
-            <div className="px-3 py-1 bg-zinc-100 text-zinc-600 text-xs font-mono uppercase tracking-tight">
-              {selectedGate}
+      <div className="lg:col-span-2">
+        <div className="card p-6 space-y-8">
+          {/* Title & Description */}
+
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold">{gate.name}</h1>
+            <p className="text-zinc-500 font-mono">"{gate.mnemonic}"</p>
+            <p className="text-zinc-500 leading-relaxed">{gate.description}</p>
+          </div>
+
+          {/* Expressions */}
+
+          <div className="space-y-3">
+            <h3 className="section-heading">Logic Expression</h3>
+            <div className="font-mono text-sm bg-zinc-50 border border-zinc-200 px-3 py-2">
+              {gate.expression}
             </div>
           </div>
 
-          <p className="text-zinc-600 mb-8 leading-relaxed text-lg">
-            {gate.description}
-          </p>
+          {/* Logic Symbol */}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            {/* Symbol */}
-            <div className="space-y-4">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400">
-                Symbol & Expression
-              </h3>
-              <div className="bg-zinc-50 border border-zinc-100 p-8 flex flex-col items-center justify-center min-h-50">
-                <div className="w-32 h-20 text-zinc-900 mb-6">
-                  <GateSymbol type={selectedGate} />
-                </div>
-                <div className="text-xl font-mono font-bold text-zinc-900">
-                  {gate.expression}
-                </div>
-              </div>
-            </div>
+          <div className="space-y-3">
+            <h3 className="section-heading">Logic Symbol</h3>
 
-            {/* Interactive test */}
-            <div className="space-y-4">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400">
-                Interactive Test
-              </h3>
-              <div className="bg-zinc-50 border border-zinc-100 p-8 flex items-center justify-center min-h-50 gap-8">
-                <div className="flex flex-col gap-6">
-                  {inputs.map((val, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => toggleInput(idx)}
-                      className={`w-10 h-10 flex rounded-md items-center justify-center border-2 transition-all font-mono font-bold ${
-                        val === LogicValue.HIGH
-                          ? "bg-zinc-900 border-zinc-900 text-white"
-                          : "bg-white border-zinc-200 text-zinc-400"
-                      }`}
-                    >
-                      {val}
-                    </button>
-                  ))}
-                </div>
-                <ArrowRight className="w-6 h-6 text-zinc-300" />
-                <div
-                  className={`w-14 h-14 flex items-center rounded-md justify-center border-2 transition-all ${
-                    output === LogicValue.HIGH
-                      ? "bg-emerald-500 border-emerald-500 text-white shadow-[0_0_20px_rgba(16,185,129,0.3)]"
-                      : "bg-white border-zinc-200 text-zinc-300"
-                  }`}
-                >
-                  <Lightbulb className="w-8 h-8" />
-                </div>
+            <div className="panel-block">
+              <div className="w-full max-w-md flex items-center justify-center">
+                <OptimizedImage src={gate.imagePath} alt={gate.name} />
               </div>
             </div>
           </div>
 
-          {/* Truth table */}
-          <div className="space-y-4">
+          {/* Block Diagram */}
+
+          <div className="space-y-3">
+            <h3 className="section-heading">Block Diagram</h3>
+
+            <div className="panel-block">
+              <div className="w-full max-w-md flex items-center justify-center">
+                <GateBlockDiagram
+                  name={gate.name}
+                  inputs={
+                    selectedGate === GateType.NOT
+                      ? { A: inputs[0] }
+                      : { A: inputs[0], B: inputs[1] }
+                  }
+                  outputs={{ Y: output }}
+                  onToggle={(label: string) => {
+                    const idx = label === "A" ? 0 : 1;
+                    toggleInput(idx);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Truth Table */}
+
+          <section>
             <h3 className="section-heading">Truth Table</h3>
             <TruthTable
               headers={[
@@ -147,7 +135,7 @@ export const LogicGatesView = () => {
                 </>
               )}
             />
-          </div>
+          </section>
         </div>
       </div>
     </div>
